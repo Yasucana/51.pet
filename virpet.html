@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Pet</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f0f8ff;
+    }
+    #pet {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      background: url('https://i.imgur.com/3pIG9Xm.png') no-repeat center/cover;
+      animation: idle 1s infinite alternate;
+    }
+    @keyframes idle {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-5px); }
+    }
+    .stats, .buttons {
+      margin: 10px 0;
+    }
+    .bar {
+      height: 20px;
+      background: lightgray;
+      margin: 5px auto;
+      width: 200px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background: green;
+      width: 100%;
+      transition: width 0.3s;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Virtual Pet</h1>
+  <div id="pet"></div>
+
+  <div class="stats">
+    <div>Hunger</div>
+    <div class="bar"><div id="hunger" class="fill"></div></div>
+    <div>Happiness</div>
+    <div class="bar"><div id="happiness" class="fill"></div></div>
+    <div>Energy</div>
+    <div class="bar"><div id="energy" class="fill"></div></div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="feed()">Feed</button>
+    <button onclick="play()">Play</button>
+    <button onclick="sleep()">Sleep</button>
+  </div>
+
+  <script>
+    const state = {
+      hunger: 100,
+      happiness: 100,
+      energy: 100
+    };
+
+    function updateBars() {
+      document.getElementById('hunger').style.width = state.hunger + '%';
+      document.getElementById('happiness').style.width = state.happiness + '%';
+      document.getElementById('energy').style.width = state.energy + '%';
+    }
+
+    function feed() {
+      state.hunger = Math.min(100, state.hunger + 20);
+      state.happiness -= 5;
+      updateBars();
+    }
+
+    function play() {
+      state.happiness = Math.min(100, state.happiness + 20);
+      state.energy -= 10;
+      updateBars();
+    }
+
+    function sleep() {
+      state.energy = Math.min(100, state.energy + 30);
+      state.hunger -= 15;
+      updateBars();
+    }
+
+    function decay() {
+      state.hunger = Math.max(0, state.hunger - 1);
+      state.happiness = Math.max(0, state.happiness - 0.5);
+      state.energy = Math.max(0, state.energy - 0.3);
+      updateBars();
+    }
+
+    updateBars();
+    setInterval(decay, 1000);
+  </script>
+</body>
+</html>
